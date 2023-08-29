@@ -1,4 +1,4 @@
-//***HR DataAnalysis ****//
+//***HR DataAnalysis //***
          
         SELECT * FROM HR;
         
@@ -6,7 +6,8 @@
         
         //CONVERT TERMDATE TO DATE FORMAT
         
-//Try with dual//        
+//***Try with dual//***     
+                 
 with t1(tm) as(
   select '2013-11-08 10:11:31 UTC' from dual
 )
@@ -19,30 +20,31 @@ select cast(to_timestamp_tz(tm, 'yyyy-mm-dd hh24:mi:ss "UTC"')
   SELECT cast(to_timestamp_tz(TERMDATE, 'yyyy-mm-dd hh24:mi:ss "UTC"') 
           as date)   as this_way FROM HRBACKUP;
           
-       //   Update the termdate in HR table//
+
+//   Update the termdate in HR table//
         UPDATE HR
         SET TERMDATE = cast(to_timestamp_tz(TERMDATE, 'yyyy-mm-dd hh24:mi:ss "UTC"') 
         as date) 
         WHERE TERMDATE IS NOT NULL;
          
-         //To aLTER TERMDATE DATA TYPE create  a backup table
+//To alter TERMDATE DATA TYPE create  a backup table
           CREATE TABLE HRBACKUP AS SELECT * FROM HR;
           
-          //REMOVE VALUES BEFORE from HR.termdate before UPDATING DATATYPE
+//REMOVE VALUES BEFORE from HR.termdate before UPDATING DATATYPE
          UPDATE HR
          SET TERMDATE = NULL;
          
          ALTER TABLE HR
          MODIFY TERMDATE DATE;
          
-         //RESTORE VALUES FROM BACKUP TABLE
+//RESTORE VALUES FROM BACKUP TABLE
          UPDATE HR
          SET TERMDATE = (SELECT TERMDATE FROM HRBACKUP WHERE HR.ID=HRBACKUP.ID AND TERMDATE IS NOT NULL)
          
-         //check the highest and least values after update and cross check with csv file//
+//check the highest and least values after update and cross check with csv file//
          select max(termdate) as maxdate, min(termdate) as mindate from HR;
          
-         //INSERT AGE COLUMN
+//INSERT AGE COLUMN
          ALTER TABLE HR 
          ADD age int;
          
@@ -58,15 +60,18 @@ select cast(to_timestamp_tz(tm, 'yyyy-mm-dd hh24:mi:ss "UTC"')
       /////////////////////////////////////////////////////////////////////////////////////////////////// 
        //QUESTIONS:
       
-       //WHAT IS THE GENDER BREAKDOWN OF EMPLOYEES IN THE COMPANY?
+       //WHAT IS THE GENDER BREAKDOWN OF EMPLOYEES IN THE COMPANY?//
+                
        SELECT DISTINCT GENDER FROM HR;
        SELECT  GENDER, COUNT(*) FROM HR where termdate is null GROUP BY GENDER;
        
-       //WHAT IS THE RACE/ETHINICITY BREAKDOWN OF EMPLOYEES?
+       //WHAT IS THE RACE/ETHINICITY BREAKDOWN OF EMPLOYEES?//
+                
        SELECT DISTINCT RACE FROM HR;
        SELECT RACE, COUNT(*) FROM HR WHERE TERMDATE IS NULL GROUP BY RACE;
        
-       //WHAT IS THE AGE DISTRIBUTION OF EMPLOYEES?
+       //WHAT IS THE AGE DISTRIBUTION OF EMPLOYEES?//
+                
        
       SELECT  GENDER,AGEGROUP, COUNT(*) FROM
       (SELECT GENDER,  CASE  WHEN AGE BETWEEN 18 AND 24 THEN '18-24'
@@ -90,11 +95,12 @@ select cast(to_timestamp_tz(tm, 'yyyy-mm-dd hh24:mi:ss "UTC"')
         GROUP BY AGEGROUP;
       
        
-       //HOW MANY EMPLOYEES WORK AT HEADQUARTERS VS REMOTE LOCATIONS?
+       //HOW MANY EMPLOYEES WORK AT HEADQUARTERS VS REMOTE LOCATIONS?//
+                
         SELECT LOCATION, COUNT(*) FROM HR GROUP BY LOCATION;
        
        
-       //WHAT IS THE AVERAGE LENGTH OF EMPLOYMENT  FOR EMPLOYEES WHO HAVE BEEN TERMINATED?
+       //WHAT IS THE AVERAGE LENGTH OF EMPLOYMENT  FOR EMPLOYEES WHO HAVE BEEN TERMINATED?//
        SELECT * FROM HR;
        
          (SELECT round(avg(MONTHS_BETWEEN(TERMDATE,HIRE_DATE)/12),0) AS EMPLENGTH FROM HR WHERE TERMDATE IS NOT NULL and termdate<=sysdate)
@@ -116,7 +122,7 @@ select cast(to_timestamp_tz(tm, 'yyyy-mm-dd hh24:mi:ss "UTC"')
         GROUP BY DEPARTMENT) 
         ORDER BY TERMINATIONRATE DESC
         
-        //WHAT IS THE DISTRIBUTION OF EMPLOYEES ACROSS LOCATIONS  BY CITY AND STATE
+        //WHAT IS THE DISTRIBUTION OF EMPLOYEES ACROSS LOCATIONS  BY CITY AND STATE//
       SELECT * FROM HR;
    
    SELECT  LOCATION_STATE, COUNT(*) AS TOTALCOUNT
@@ -125,7 +131,7 @@ select cast(to_timestamp_tz(tm, 'yyyy-mm-dd hh24:mi:ss "UTC"')
    GROUP BY LOCATION_STATE
    ORDER BY TOTALCOUNT DESC
    
-   //HOW HAS THE COMAPANYS EMPLOYEE COUNT CHANGED OVERTIME BASED ON HIRE AND TERM DATE
+   //HOW HAS THE COMAPANYS EMPLOYEE COUNT CHANGED OVERTIME BASED ON HIRE AND TERM DATE//
    
    SELECT YEAR, HIREDCNT, TERMINATEDCNT, HIREDCNT-TERMINATEDCNT AS CNTCHANGE,
    ROUND(((HIREDCNT-TERMINATEDCNT) /HIREDCNT)*100,2) AS PERCENTAGECHG
@@ -138,7 +144,7 @@ select cast(to_timestamp_tz(tm, 'yyyy-mm-dd hh24:mi:ss "UTC"')
    ORDER BY YEAR
    
    
-  //WHAT IS THE TENURE DISTRIBUTION FOR EACH DEPARTMENT
+  //WHAT IS THE TENURE DISTRIBUTION FOR EACH DEPARTMENT//
   
         SELECT DEPARTMENT, round(avg(MONTHS_BETWEEN(TERMDATE,HIRE_DATE)/12),0) AS EMPLENGTH FROM HR WHERE TERMDATE IS NOT NULL and termdate<=sysdate
         GROUP BY DEPARTMENT;
