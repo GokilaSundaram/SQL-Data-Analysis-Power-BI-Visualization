@@ -12,3 +12,4 @@
 ![image](https://github.com/GokilaSundaram/SQL-Data-Analysis-Power-BI-Visualization/assets/138405457/7aaf3822-7809-407a-befe-80662aeed5dd)
 
 
+![image](https://github.com/GokilaSundaram/SQL-Data-Analysis-Power-BI-Visualization/assets/138405457/81118c4a-a423-4288-b532-dd0109517d0a)
