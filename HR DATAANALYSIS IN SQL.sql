@@ -13,10 +13,8 @@ with t1(tm) as(
 )
 select cast(to_timestamp_tz(tm, 'yyyy-mm-dd hh24:mi:ss "UTC"') 
           as date)   as this_way  
-     , cast(to_timestamp_tz(tm, 'yyyy-mm-dd hh24:mi:ss "UTC"') 
-         as date) as or_this_way
-  from t1
-  
+      from t1
+  /////////////////////////////////////////////////////////////////////////
   SELECT cast(to_timestamp_tz(TERMDATE, 'yyyy-mm-dd hh24:mi:ss "UTC"') 
           as date)   as this_way FROM HRBACKUP;
           
