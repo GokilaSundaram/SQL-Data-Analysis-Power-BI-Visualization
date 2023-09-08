@@ -109,7 +109,7 @@ select cast(to_timestamp_tz(tm, 'yyyy-mm-dd hh24:mi:ss "UTC"')
        
         SELECT DEPARTMENT, GENDER, COUNT(*) FROM HR GROUP BY DEPARTMENT,GENDER  ORDER BY DEPARTMENT;
         
-        //which department has highest turnover rate//
+        //which department has highest termination rate//
         select * from hr;
         
         select DEPARTMENT, TOTAL_COUNT, TERMINATED_COUNT, ROUND((TERMINATED_COUNT/TOTAL_COUNT),3)AS TERMINATIONRATE
